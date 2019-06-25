@@ -1,5 +1,9 @@
 # vue-element-uploader
 > A Vue.js & element-ui upload and image crop component
+
+## Preview
+![demo](/demo.gif)
+
 ## Features
 * Allow single file or multiple files
 * File validation
@@ -21,12 +25,10 @@ coming soon
 coming soon
 
 ## Server processing
+coming soon
 
 ## Language
 coming soon
 
-
 ## Reference
 coming soon
-
-***This file is under construction**
