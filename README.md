@@ -15,7 +15,7 @@
 * Recover upload and Fast file transfer
 * Easy to use
 
-## How to use
+## How to use?
 coming soon
 
 ## Usage
@@ -31,4 +31,13 @@ coming soon
 coming soon
 
 ## Reference
-coming soon
+* vue
+* element-ui
+* simple-uploader.js
+* vue-cropper
+* viewerjs
+* vue-i18n
+
+## License
+
+[MIT](https://github.com/DarkWinoom/vue-element-uploader/blob/master/LICENSE) license.

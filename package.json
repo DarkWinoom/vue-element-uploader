@@ -1,0 +1,19 @@
+{
+  "name": "vue-element-uploader",
+  "version": "0.1.0",
+  "description": "A Vue.js & element-ui upload and image crop component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarkWinoom/vue-element-uploader.git"
+  },
+  "author": "DarkWinoom <archzars@vip.qq.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DarkWinoom/vue-element-uploader/issues"
+  },
+  "homepage": "https://github.com/DarkWinoom/vue-element-uploader#readme"
+}
