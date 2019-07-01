@@ -33,7 +33,9 @@ coming soon
 ## Reference
 * vue
 * element-ui
+* axios
 * simple-uploader.js
+* spark-md5
 * vue-cropper
 * viewerjs
 * vue-i18n
