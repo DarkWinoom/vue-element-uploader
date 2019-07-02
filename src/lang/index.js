@@ -20,7 +20,7 @@ const messages = {
 export function getLanguage() {
   const language = (navigator.language || navigator.browserLanguage).toLowerCase()
   const locales = Object.keys(messages)
-  console.log(language)
+  console.log('current language: ' + language)
   for (const locale of locales) {
     if (language.indexOf(locale) > -1) {
       return locale

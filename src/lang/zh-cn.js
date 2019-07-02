@@ -1,4 +1,70 @@
 export default {
-  title: '你好世界',
-  click: '点击我'
+  tips: {
+    notSupport: '浏览器不支持该功能，请使用IE10以上或其他浏览器！',
+    dropField: '将文件拖到此处，或 <em>点击上传</em>',
+    forceUpload: '强制上传',
+    forceUploadTips: '开启后将不会使用快传和断点续传功能，对正在上传中的文件无效',
+    singleFile: '请选择单一文件',
+    queueLimit: '数量限制：{limit}',
+    typeLimit: '格式限制：{limit}',
+    sizeSuggestion: '尺寸建议：{width}像素 x {height}像素',
+    sizeLimig: '单文件大小限制：{limit}',
+    format: '格式',
+    image: '图片',
+    video: '视频',
+    audio: '音频',
+    unlimited: '不限',
+    imageCrop: '图片裁剪',
+    preview: '点击预览',
+    cropped: '已裁剪',
+    ok: '确定',
+    cropping: '裁剪中',
+    cancle: '取消',
+    close: '关闭'
+  },
+  control: {
+    list: '上传列表 ({length})',
+    file: '文件',
+    status: '状态',
+    revert: '还原',
+    crop: '裁剪',
+    retry: '重试',
+    start: '开始',
+    resume: '继续',
+    pause: '暂停',
+    remove: '移除',
+    clear: '清空',
+    zoomIn: '放大',
+    zoomOut: '缩小',
+    rotateLeft: '向左旋转',
+    rotateRight: '向右旋转'
+  },
+  status: {
+    preparing: '准备中',
+    success: '上传成功',
+    fail: '上传失败',
+    connecting: '正在连接',
+    paused: '已暂停',
+    processing: '正在处理',
+    waiting: '等待上传'
+  },
+  notify: {
+    fileAddIgnore: '文件"{file}"的添加已被忽略',
+    queueLimitError: '文件数量超过限制',
+    TypeLimitError: '文件格式有误',
+    sizeLimitError: '文件大小超过限制',
+    filePreparing: '文件正在准备中，请稍候再试',
+    oneFilePreparing: '文件“{file}”正在准备中，请稍候重试',
+    serverFailed: '服务器连接失败，请稍候重试',
+    uploadFailed: '文件上传失败',
+    unkonwError: '未知错误',
+    uploadLock: '文件正在上传中，无法执行操作',
+    imageLoadFailed: '无法读取图片',
+    imageCropDropFailed: '原图片数据已丢失，无法还原'
+  },
+  confirm: {
+    system: '系统提示',
+    removeFile: '将文件移除列表?',
+    clearList: '清空上传列表（已上传的文件也会移除）?'
+  }
 }

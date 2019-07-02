@@ -1,4 +1,70 @@
 export default {
-  title: 'Hello World',
-  click: 'Click me'
+  tips: {
+    notSupport: 'Your browser does not support this feature, please use IE10 or above or other browsers!',
+    dropField: 'Drag files here or <em>click Upload</em>',
+    forceUpload: 'Force upload',
+    forceUploadTips: 'When enabled, the fast transfer and breakpoint resume will not be used, which is invalid for the file being uploaded.',
+    singleFile: 'Please select a single file',
+    queueLimit: 'Quantitative restrictions: {limit}',
+    typeLimit: 'Format restrictions: {limit}',
+    sizeSuggestion: 'Size suggestion: {width} x {height}',
+    sizeLimig: 'Single file size limit: {limit}',
+    format: '',
+    image: 'image',
+    video: 'video',
+    audio: 'audio',
+    unlimited: 'unlimited',
+    imageCrop: 'Crop image',
+    preview: 'click to preview',
+    cropped: 'Cropped',
+    ok: 'OK',
+    cropping: 'Cutting',
+    cancle: 'Cancle',
+    close: 'Close'
+  },
+  control: {
+    list: 'the upload list ({length})',
+    file: 'File',
+    status: 'Status',
+    revert: 'Revert',
+    crop: 'Crop',
+    retry: 'Retry',
+    start: 'Start',
+    resume: 'Resume',
+    pause: 'Pause',
+    remove: 'Remove',
+    clear: 'Clear',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    rotateLeft: 'Rotate left',
+    rotateRight: 'Rotate right'
+  },
+  status: {
+    preparing: 'Preparing',
+    success: 'Success',
+    fail: 'Fail',
+    connecting: 'Connecting',
+    paused: 'Paused',
+    processing: 'Processing',
+    waiting: 'Waiting'
+  },
+  notify: {
+    fileAddIgnore: 'Addition of file "{file}" has been ignored',
+    queueLimitError: 'The number of files exceeds the limit',
+    TypeLimitError: 'Incorrect file format',
+    sizeLimitError: 'File size exceeds limit',
+    filePreparing: 'The file is in preparation, please try again later',
+    oneFilePreparing: 'The file "{file}" is in preparation, please try again later',
+    serverFailed: 'Server connection failed, please try again later',
+    uploadFailed: 'File upload failed',
+    unkonwError: 'unknow error',
+    uploadLock: 'The file is being uploaded and cannot be operated',
+    imageLoadFailed: 'Unable to read the image',
+    imageCropDropFailed: 'Original image data has been lost and cannot be restored'
+  },
+  confirm: {
+    system: 'SYSTEM',
+    removeFile: 'Will the file be removed from the list?',
+    clearList: 'Clear the upload list (the uploaded file will also be removed)?'
+  }
 }

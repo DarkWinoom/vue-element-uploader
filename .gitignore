@@ -5,6 +5,7 @@ yarn-error.log
 package-lock.json
 
 # Editor directories and files
+.vscode
 .idea
 *.suo
 *.ntvs*
