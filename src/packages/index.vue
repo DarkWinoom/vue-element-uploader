@@ -74,20 +74,16 @@ export default {
     },
     headers: {
       // Additional request header
-      type: Function,
+      type: [Function, Object],
       default() {
-        return function(file, chunk) {
-          return {}
-        }
+        return {}
       }
     },
     query: {
       // Additional request query
-      type: Function,
+      type: [Function, Object],
       default() {
-        return function(file, chunk) {
-          return {}
-        }
+        return {}
       }
     },
     fastTransfer: {
@@ -152,20 +148,20 @@ export default {
       default: false
     },
     sparkUnique: {
-      // 使用spark-md5计算值来代替uniqueIdentifier
-      // 在添加文件时将会自动计算，对于大体积文件需要花费一定时间（同时在计算时可能会造成浏览器卡顿）
-      // 通过计算后，将会更加准确的触发快传和断点续传
+      // Using spark-md5 instead of uniqueIdentifier
+      // The calculation will run automatically when the file added, it takes a certain amount of time (depending on file size)
+      // This will make the file unique more precise
       type: Boolean,
       default: true
     },
     dialogVisible: {
-      // 外部控件显示与否，用于更新文件状态
-      // 使用模态框显示时需要将该参数绑定其visible属性，不使用时忽略
+      // When you use dialog to show this components
+      // Make sure this prop sync with the dialog visible value
       type: Boolean,
       default: false
     },
     lang: {
-      // 使用的语言
+      // Using language
       type: String,
       default: 'auto'
     }
@@ -180,9 +176,8 @@ export default {
     }
     return {
       loading: false,
-      // 是否支持
       support: true,
-      // simple-uploader 配置
+      // simple-uploader.js config
       simpleUploaderOptions: {
         target: this.target,
         testChunks: testChunks(),
@@ -191,7 +186,9 @@ export default {
           if (objMessage.data.id) {
             return true
           }
-          return (objMessage.data.skipChunks || []).indexOf(chunk.offset + 1) >= 0
+          return (
+            (objMessage.data.skipChunks || []).indexOf(chunk.offset + 1) >= 0
+          )
         },
         // simultaneousUploads: 1,
         fileParameterName: this.field,
@@ -259,11 +256,10 @@ export default {
         this.uploader.unAssignDrop(this.$refs.drop)
       }
     }
-    console.log('Uploader has been destroyed')
   },
   methods: {
     ignoreNotify(file, title, type = 'warning') {
-      // 自定义通知拼接
+      // Custom notification
       setTimeout(() => {
         this.$notify({
           title: title,
@@ -274,13 +270,15 @@ export default {
       }, 100)
     },
     handleChangeForceUpload(value) {
+      // Force upload handle setting
       this.uploader.opts.testChunks = !value
     },
     complete(message) {
+      // All files upload success
       this.$emit('complete', message)
     },
     fileAdded(file, event) {
-      // 格式与大小检测
+      // File format and size detection
       if (this.queueLimit > 1 && this.files.length >= this.queueLimit) {
         this.ignoreNotify(file, this.$t('notify.queueLimitError'))
         return false
@@ -322,6 +320,7 @@ export default {
       this.files.splice(index, 1)
     },
     filesSubmitted(files, fileList, event) {
+      // After a file been added, run a queue limit test
       if (
         this.queueLimit > 0 &&
         this.files.length + files.length > this.queueLimit
@@ -339,9 +338,11 @@ export default {
       }
     },
     handleAddFile(file) {
+      // Add a file (call by subassembly)
       this.uploader.addFile(file)
     },
     handleRemove(file) {
+      // Remove a file (call by subassembly)
       this.uploader.removeFile(file)
     }
   }

@@ -80,45 +80,37 @@ export default {
   components: { VueCropper },
   props: {
     value: {
-      // 隐藏 / 显示控件
+      // Show or hide the dialog
       type: Boolean,
       default: false
     },
     id: {
-    // 传入图片的识别id
+      // Current file's id
       type: Number,
       default: undefined
     },
     file: {
-      // 传入的图片文件
+      // Current file's resource
       type: File,
       default: undefined
     },
     cropWidth: {
-      // 初始截取框宽度
       type: Number,
       default: 0
     },
     cropHeight: {
-      // 初始截取框高度
       type: Number,
       default: 0
     },
     cropFixed: {
-      // 截图框宽高控制
-      // true 固定大小，无法改变
-      // [宽度, 高度] 只能按照比例改变（如[1, 1]）
-      // false 不固定大小和比例，可自由改变
       type: [Boolean, Array],
       default: false
     },
     cropOutputQuantity: {
-      // 输出图片质量（0.1 - 1）
       type: Number,
       default: 1
     },
     cropOutputType: {
-      // 输出图片格式（支持jpg和png）
       type: String,
       default: 'png'
     }
@@ -136,17 +128,17 @@ export default {
       fixedNumber = this.cropFixed
     }
     return {
-      // 裁剪组件的基础配置option
       error: false,
       image: undefined,
       option: {
-        outputSize: this.cropOutputQuantity, // 裁剪生成图片的质量
+        // vue-cropper config, reference https://github.com/xyxiao001/vue-cropper/blob/master/english.md
+        outputSize: this.cropOutputQuantity,
         outputType: this.cropOutputType,
-        autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: this.cropWidth, // 默认生成截图框宽度
-        autoCropHeight: this.cropHeight, // 默认生成截图框高度
-        fixed: fixed, // 是否开启截图框宽高固定比例
-        fixedNumber: fixedNumber, // 截图框的宽高比例
+        autoCrop: true,
+        autoCropWidth: this.cropWidth,
+        autoCropHeight: this.cropHeight,
+        fixed: fixed,
+        fixedNumber: fixedNumber,
         fixedBox: fixedBox,
         centerBox: true,
         high: false,
@@ -191,10 +183,12 @@ export default {
     init() {
       this.image =
         'data:image/png;base64,UmFyIRoHAQAzkrXlCgEFBgAFAQGAgABRBebzLAIDC4gABIgAIPex5LiAAAAQ5rWL6K+V55SodHh0LnR4dAoDApWmBesFmNQBdGVzdLLiytQdd1ZRAwUEAA=='
+        // A blank image
       this.loading = false
       this.error = false
     },
     changeScale(num) {
+      // Modify the image size. The positive number becomes larger. The negative number becomes smaller.
       if (this.loading) {
         return false
       }
@@ -202,18 +196,21 @@ export default {
       this.$refs.cropper.changeScale(num)
     },
     rotateLeft() {
+      // Rotate 90 degrees to the left
       if (this.loading) {
         return false
       }
       this.$refs.cropper.rotateLeft()
     },
     rotateRight() {
+      // Rotate 90 degrees to the right
       if (this.loading) {
         return false
       }
       this.$refs.cropper.rotateRight()
     },
     finish() {
+      // Crop success (by click OK button)
       if (this.error) {
         this.$emit('close')
       } else {

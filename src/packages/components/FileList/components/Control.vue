@@ -46,7 +46,9 @@ export default {
   },
   computed: {
     showStart() {
-      // 开始按钮可用条件：列表非空，并且至少有一项处于非暂停状态（初始化也将视作非暂停）
+      // The start button can be used by the following:
+      // 1.The list is not empty.
+      // 2.Not all of the files is uploading.
       if (this.list.length > 0) {
         let paused = 0
         for (const item of this.list) {
@@ -59,7 +61,9 @@ export default {
       return false
     },
     showPause() {
-      // 暂停按钮可用条件：列表非空，并且至少有一项正在上传中
+      // The pause button cna be used by the following:
+      // 1.The list is not empty.
+      // 2.The uploading file at least one.
       if (this.list.length > 0) {
         let uploading = 0
         for (const item of this.list) {
@@ -72,7 +76,8 @@ export default {
       return false
     },
     showClear() {
-      // 清空按钮可用条件：列表非空
+      // The clear button cna be used by the following:
+      // 1.The list is not empty.
       return this.list.length > 0
     }
   },

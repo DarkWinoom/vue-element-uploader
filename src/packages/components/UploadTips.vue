@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     typeLimitTips() {
-      // 格式转换成文字提示
+      // Format type to Easy-to-read text
       if (this.typeLimit.length > 0) {
         const typeTips = []
         for (const type of this.typeLimit) {
@@ -92,7 +92,7 @@ export default {
       }
     },
     sizeLimitTips() {
-      // 大小转换成文字提示
+      // Format size to Easy-to-read text
       if (this.sizeLimit) {
         return formatSize(this.sizeLimit)
       } else {
@@ -102,6 +102,7 @@ export default {
   },
   methods: {
     handleChange() {
+      // Change the force upload checkbox
       this.$emit('change', this.checked)
     }
   }

@@ -48,7 +48,7 @@ export default {
       return name.substr(name.lastIndexOf('.') + 1).toUpperCase()
     },
     formatProgress(row) {
-      // 上传进度文本
+      // Progress text
       let progress = Math.floor(row.progress * 10000) / 100
       if (progress >= 100 && !row.isComplete) {
         progress = 99
@@ -113,11 +113,11 @@ export default {
     },
     progressColor(row) {
       if (row.isComplete) {
-        return '#67C23A'
+        return '#67C23A' // green
       } else if (row.error) {
-        return '#F56C6C'
+        return '#F56C6C' // red
       } else {
-        return '#409EFF'
+        return '#409EFF' // blue
       }
     }
   }

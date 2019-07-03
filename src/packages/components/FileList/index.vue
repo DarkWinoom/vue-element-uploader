@@ -130,34 +130,33 @@ export default {
   data() {
     return {
       loading: false,
-      maxHeight: 0,
-      key: 0, // 修改key可以强制刷新表格，用来解决删除文件后表格不更新的问题
+      maxHeight: 'auto',
+      key: 0, // Change value will refresh the table list
       events: [
         'fileProgress',
         'fileSuccess' /* , 'fileComplete' */,
         'fileError'
       ],
       handlers: {},
-      errors: [], // 出错的file.id，用以过滤错误提示
-      successMessage: [], // 上传成功后文件从服务端返回的内容
-      successList: [], // 正在合并或者已经合并成功的id列表
-      index: 0, // 文件索引（按新增顺序）
-      list: [],
-      lines: 4, // 显示的文件行数
-      completeLock: false,
-      // 某些情况下complete()方法会被多次调用，加入锁可保证只会执行一次
+      errors: [], // The array of file.id, make show the error tips only display once
+      successMessage: [], // The array of message witch form server after file upload success
+      successList: [], // The array of upload successed file.id
+      index: 0, // The index of the list files
+      list: [], // Current file list
+      lines: 4, // Show the scroller when the list files more than it
+      completeLock: false, // Using complete lock to make show the complete function only run once
 
-      cropMode: undefined, // 非可选值时将会调用裁剪或还原覆盖（可选值sure或drop）
-      cropQueue: undefined, // 裁剪或还原成功后调用，queue标记
-      showCrop: false, // 是否显示裁剪框
-      cropId: undefined, // 传入裁剪文件的id
-      cropFile: undefined, // 传入裁剪的文件资源
-      cropCache: [] // 已裁剪文件缓存，queue => file（用于还原）
+      cropMode: undefined, // Crop mode mark when file added (sure, drop or undefined)
+      cropQueue: undefined, // Current crop file's queue value
+      showCrop: false, // Whether to display the crop dialog
+      cropId: undefined, // Current crop file's id
+      cropFile: undefined, // Current crop file's resource
+      cropCache: [] // Clipped file cache, queue => file (for file restore)
     }
   },
   computed: {
     isComplete() {
-      // 列表中的文件是否全部上传完毕（若列表为空返回true）
+      // Whether all the files in the list have been uploaded (or the list is empty)
       let complete = false
       if (this.list.length > 0) {
         complete = true
@@ -172,6 +171,7 @@ export default {
   },
   watch: {
     dialogVisible(value) {
+      // When hide this component of dialog, pause all of the uploading files
       if (this.isComplete) return true
       for (const file of this.files) {
         if (value) {
@@ -186,7 +186,7 @@ export default {
         this.index++
         this.fileInit(file, this.index)
       }
-      // 根据文件的添加顺序重新排列
+      // Sort the list by queue value
       this.list.sort((a, b) => {
         return a.queue - b.queue
       })
@@ -227,26 +227,26 @@ export default {
           queue = this.cropQueue
         }
         const file = {
-          queue: queue,
-          file: rowFile.file,
-          id: rowFile.id, // 原文件列表和新生成的文件列表通过id进行对应
-          type: rowFile.fileType,
-          url: '',
-          name: rowFile.name,
-          size: rowFile.size,
-          progress: 0,
-          speed: 0,
-          timeRemaining: 0,
-          uploadedSize: 0, // 已上传的大小
-          computed: !this.sparkUnique, // 为true表示计算md5成功（运行上传）
-          paused: false, // 是否已暂停
-          error: false, // 是否出错
-          croped: croped, // 是否已经被裁剪
-          canCrop: this.cropOpen && isImage, // 是否显示裁剪按钮
-          isRealImage: false, // 是否是真实的图片
-          isInitialization: true, // 是否新加入的文件（用于显示“开始”按钮）
-          isComplete: false, // 是否已上传完毕
-          isUploading: false // 是否正在上传
+          queue: queue, // file's queue of insert
+          file: rowFile.file, // file's resource
+          id: rowFile.id, // file's id (customize by simple-uploader.js)
+          type: rowFile.fileType, // file's mime type
+          url: '', // file's base64 url (image only)
+          name: rowFile.name, // file's original name (named by uploader user)
+          size: rowFile.size, // file's real size (byte)
+          progress: 0, // A number of file uploading progress, 0 to 1
+          speed: 0, // Average speed of a uploading file, bytes per second
+          timeRemaining: 0, // Estimated remaining upload time
+          uploadedSize: 0, // Uploaded size
+          computed: !this.sparkUnique, // Calculation file's identifier success or not
+          paused: false, // Indicated if file is paused
+          error: false, // Indicated if file has encountered an error
+          croped: croped, // Whether a file has been cropped
+          canCrop: this.cropOpen && isImage, // Show crop button or not
+          isRealImage: false, // Whether a image is real
+          isInitialization: true, // Whether the file is new one
+          isComplete: false, // Whether the file has completed uploading and received a server response
+          isUploading: false // Whether file chunks is uploading
         }
         const eventHandler = event => {
           this.handlers[event] = (...args) => {
@@ -260,13 +260,14 @@ export default {
           rowFile.uploader.on(event, eventHandler(event))
         })
         if (rowFile.uploader.opts.singleFile === true) {
-          // 设定了只上传单一文件
+          // When setting is true, once one file is uploaded, second file will overtake existing one, first one will be canceled
           this.list = [file]
           this.key++
         } else {
           this.list.push(file)
         }
         if (isImage) {
+          // If the file is image file, will show a picture snap and can be preview it
           const fr = new FileReader()
           fr.onload = e => {
             const row = this._getRow(rowFile.id)
@@ -288,26 +289,26 @@ export default {
       row.computed = true
     },
     handleResume(id) {
-      // 继续 & 开始下载
+      // star or resume uploading
       const row = this._getRow(id)
       if (!row.computed) {
         this.$message.warning(this.$t('notify.filePreparing'))
       } else {
         const file = this._getFile(id)
-        row.canCrop = false // 开始后禁止裁剪
+        row.canCrop = false // It can not be crop, when the file has star uploading
         file.resume()
         this._actionCheck(file)
       }
     },
     handlePause(id) {
-      // 暂停
+      // Pause a uploading file
       const file = this._getFile(id)
       file.pause()
       this._actionCheck(file)
       this._fileProgress(file)
     },
     handleRetry(id) {
-      // 重试
+      // Retry uploading when a file has encountered an error
       const file = this._getFile(id)
       file.retry()
       this._actionCheck(file)
@@ -316,6 +317,7 @@ export default {
       this.errors.splice(index, 1)
     },
     handleRemove(id, completeCheck = true) {
+      // Remove a file from the display list and the file list
       const file = this._getFile(id)
       const index = this.list.findIndex(item => item.id === id)
       this.list.splice(index, 1)
@@ -326,22 +328,26 @@ export default {
       }
     },
     _getFile(value, field = 'id') {
+      // Get simple-uloader.js file with file id (or other unique field)
       return this.files.find(item => {
         return item[field] === value
       })
     },
     _getRow(value, field = 'id') {
+      // Get display list file with file id (or other unique field)
       return this.list.find(item => {
         return item[field] === value
       })
     },
     _actionCheck(file) {
+      // Check current status of a file
       const row = this._getRow(file.id)
       row.paused = file.paused
       row.error = file.error
       row.isUploading = file.isUploading()
     },
     _fileProgress(file) {
+      // Progress current status of a file
       const row = this._getRow(file.id)
       row.isInitialization = false
       row.progress = file.progress()
@@ -351,12 +357,15 @@ export default {
       this._actionCheck(file)
     },
     _fileSuccess(file, files, message, chunk) {
+      // File upload success
+      // Attention. this function can be called more than once
       const data = {
         totalChunks: file.chunks.length,
         filename: file.name,
         identifier: file.uniqueIdentifier
       }
       const check = (file, message) => {
+        // Check a file's status to display
         this._fileProgress(file)
         const row = this._getRow(file.id)
         row.error = false
@@ -367,10 +376,13 @@ export default {
       }
       message = JSON.parse(message).data
       if (!this.successList.find(function(value) { return value === file.id })) {
+        // Make sure the following can be running once (in a file)
         this.successList.push(file.id)
         if (message.id || data.totalChunks === 1) {
+          // A file total chunks only one, means no need to execute merge commands
           check(file, message)
         } else {
+          // A file upload success, command server to merge it
           axios({
             url: this.target,
             method: 'post',
@@ -385,7 +397,7 @@ export default {
       }
     },
     _fileError(rootFile, file, message, chunk) {
-      // 上传失败
+      // Upload fail
       if (message) {
         message = JSON.parse(message).data
       } else {
@@ -409,7 +421,7 @@ export default {
       }
     },
     completeCheck() {
-      // 列表中文件全部上传完成后回调
+      // Check all files upload complete, and emit it on true
       if (this.completeLock || this.errors.length > 0 || !this.isComplete) {
         return false
       }
@@ -423,7 +435,7 @@ export default {
       }
     },
     handleCrop(id) {
-      // 点击裁剪按钮
+      // User click crop button
       const row = this._getRow(id)
       if (row.isUploading) {
         this.$message.error(this.$t('notify.uploadLock'))
@@ -434,7 +446,7 @@ export default {
       }
     },
     handleCropComplete(id, name, blob) {
-      // 裁剪确认回调
+      // Call this when a file crop success
       const row = this._getRow(id)
       this.showCrop = false
       this.cropMode = 'sure'
@@ -448,7 +460,7 @@ export default {
       this.$emit('add-file', file)
     },
     handleCropDrop(queue) {
-      // 点击裁剪还原按钮
+      // User click crop drop button, revert file
       const row = this._getRow(queue, 'queue')
       if (row.isUploading) {
         this.$message.error(this.$t('notify.uploadLock'))
@@ -463,25 +475,25 @@ export default {
       }
     },
     handleStartAll() {
-      // 全部开始
+      // Start all files
       if (this.isComplete) return true
       for (const row of this.list) {
         if (!row.computed) {
-          this.$message.warning(this.$t('notify.oneFilePreparing',{file:row.name}))
+          this.$message.warning(this.$t('notify.oneFilePreparing', { file: row.name }))
         } else {
           this.handleResume(row.id)
         }
       }
     },
     handlePauseAll() {
-      // 全部暂停
+      // Pause all files
       if (this.isComplete) return true
       for (const row of this.list) {
         this.handlePause(row.id)
       }
     },
     handleClear() {
-      // 清空上传列表
+      // Clear all files
       const files = this.files.concat()
       for (const file of files) {
         this.$emit('remove', file)

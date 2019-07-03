@@ -1,7 +1,7 @@
 <?php
 /**
  * vue-element-uploader php demo
- * This example is only a sample of the process and can be used as a reference. It should not be used directly in the production.
+ * This example is only a sample of the process and can be used as a reference. It should not be used directly in production project.
  *
  * @auth DarkWinoom <archzars@vip.qq.com>
  */
@@ -28,7 +28,7 @@ class uploader
         } else {
             $this->uploadUrl = 'http://' . $domain;
         }
-        // compose the upload http url
+        // Compose the upload http url
         $this->uploadUrl .= '/' . $temporaryFolder . '/';
     }
 
@@ -199,7 +199,7 @@ class uploader
 
     public function get_file($identifier, $filename)
     {
-        // Get file information (in the database)
+        // Get file information (should in the database)
         // Compare and return the files stored in the database with $identifier (here for the demo)
 
         // The spark-md5 calculated by the file is consistent, when the same file with different suffixes
@@ -212,7 +212,7 @@ class uploader
         $extension = '.' . strtolower($path_info['extension']);
         $hash_name = $identifier . $extension;
         return array(
-            'id' => rand(1, 99999), // The id may come from database
+            'id' => rand(1, 99999), // ID is created by database
             'identifier' => $identifier,
             'name' => $filename, // Original file name
             'link' => $this->uploadUrl . $hash_name // File http url address
@@ -251,7 +251,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             'identifier' => $_GET['identifier'],
             'name' => $_GET['filename'],
             'link' => '',
-            'skipChunks' => $uploader->uploaded_chunks($_GET['identifier'], $_GET['totalChunks']) // 已上传的块（断点续传）
+            'skipChunks' => $uploader->uploaded_chunks($_GET['identifier'], $_GET['totalChunks']) // the chunks witch has been uploaded
         );
         // You should throw some of de chunks, to make sure the chunks is complete
         // Number of files based on 'simultaneousUploads'(a config of simple-uploader.js, default is 3)

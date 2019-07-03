@@ -1,8 +1,7 @@
-
 /**
- * 格式化时间（时分秒）
+ * Format Timestamp (00:00:00)
  *
- * @param {Integer} s 时间戳
+ * @param {Integer} s Timestamp
  */
 export function secondsToStr(s) {
   let t
@@ -29,11 +28,11 @@ export function secondsToStr(s) {
 }
 
 /**
-   * 格式化文件大小
-   *
-   * @param {[Integer]} filesize 文件大小
-   * @return {[String]}
-   */
+ * Format size file
+ *
+ * @param {[Integer]} filesize file size (byte)
+ * @return {[String]}
+ */
 export function formatSize(filesize) {
   filesize = parseInt(filesize)
   if (filesize == null || !filesize) {

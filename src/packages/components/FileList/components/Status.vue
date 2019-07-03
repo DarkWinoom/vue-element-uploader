@@ -11,13 +11,13 @@ import { formatSize, secondsToStr } from '../../../commons/utils'
 export default {
   filters: {
     formatSpeed(speed) {
-      // 速度文本
+      // Speed text
       if (speed > 0) {
-        return `${formatSize(speed)} / 秒`
+        return `${formatSize(speed)} / s`
       } else {
         return ''
       }
-    },
+    }
   },
   props: {
     data: {
@@ -41,9 +41,9 @@ export default {
       row: this.data
     }
   },
-  methods: {    
+  methods: {
     formatStatus(row) {
-      // 剩余时间文本（状态）
+      // Remaining time text (status)
       if (!row.computed) {
         return this.$t('status.preparing')
       } else if (row.isComplete) {
